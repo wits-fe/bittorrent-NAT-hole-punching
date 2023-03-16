@@ -1,8 +1,12 @@
 # bittorrent-NAT-hole-punching
  NAT 自动打洞脚本用于 uTorrent/qBittorrent
-# 原理
+# 脚本说明
  - NAT Full Cone (NAT1) NAT全锥形网络允许打开的端口接收来自任意IP的访问数据，保持该端口开放，
-   并通知 Tracker 从该端口访问，可使原本处于NAT内网环境下的 BT 软件获得接近公网环境的连接性
+   并报告 Tracker 让其他用户从该端口访问，可使原本处于NAT内网环境下的 BT 客户端获得近似公网环境的连接性。
+   
+   打洞软件打通的端口是随机的，所以 BT 客户端要让其他用户能访问到就需要变更端口与该端口一致
+   
+   当端口打开后，通知 BT 客户端设置端口，添加路由转发规则就是这个脚本所做的事情
 
 # 使用方法
 1. 下载 [natmap](https://github.com/heiher/natmap)
@@ -40,7 +44,7 @@
    -b 3333                     绑定的端口，任意在 1024-65535 之间的端口都可以
    /root/app/ut/update-ut.sh   脚本路径
    ```
-   细节请查看 [natmap](https://github.com/heiher/natmap)
+   命令细节请查看 [natmap](https://github.com/heiher/natmap)
 ## 让脚本自动运行
 - 编辑 `/etc/rc.local`, 比如
   ```
@@ -62,7 +66,7 @@
   ```
 - 本地编辑好的脚本文件怎么传到路由器上？
 
-  可以先在本地建一个文件服务器，比如使用[caddy](https://caddyserver.com/download)，下载后，打开cmd，运行
+  可以先在本地建一个文件服务器，比如使用 [caddy](https://caddyserver.com/download)，下载后，打开cmd，运行
   ```
   caddy.exe file-server --browse --root D:\Downloads
   ```
@@ -72,11 +76,14 @@
   ```
   curl http://192.268.0.74/update-qb.sh --output update-qb.sh
   ```
-- uTorrent（2.2.1以前）的 WebUI 无法访问，因为默认没安装
+- uTorrent（2.2.1以前）默认未安装 WebUI
 
-  可在本仓库下载 [webui.zip](/webui.zip) 置于 uTorrent 根目录下以启用
+  可在本仓库下载 [webui.zip](/webui.zip) 置于 uTorrent 根目录下以启用（不用解压）
+- 当 BT 客户端未运行
+
+  脚本每2分钟检查一次 BT 客户端是否在线，在线后停止检查
 
 # 参考
-  - https://github.com/Mythologyli/qBittorrent-NAT-TCP-Hole-Punching
-  - https://github.com/MikeWang000000/Natter
-  - https://github.com/heiher/natmap
+  - [qBittorrent-NAT-TCP-Hole-Punching](https://github.com/Mythologyli/qBittorrent-NAT-TCP-Hole-Punching)
+  - [Natter](https://github.com/MikeWang000000/Natter)
+  - [natmap](https://github.com/heiher/natmap)
