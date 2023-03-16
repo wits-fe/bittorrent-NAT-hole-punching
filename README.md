@@ -3,6 +3,15 @@
  
  [中文](/README.zh.md)
  
+# Description
+ - Full Cone NAT (NAT1) allows the open port to receive data from any IP, keep a port open, then report it to the tracker, send/receive data with that port,
+   which will make BT clients that are behind the NAT open to public.
+
+   Because the port opened by the hole punching software is random, 
+   the BT client needs to change the port to match it so that other users can connect to.
+
+   That informing the BT client to set the random-opened port, adding route-forwarding rules is what this script does.
+
 # Usage
 1. Download [natmap](https://github.com/heiher/natmap)
 
@@ -49,6 +58,6 @@
   ```
   That will make program always run on startup
 # Reference
-  - https://github.com/Mythologyli/qBittorrent-NAT-TCP-Hole-Punching
-  - https://github.com/MikeWang000000/Natter
-  - https://github.com/heiher/natmap
+  - [qBittorrent-NAT-TCP-Hole-Punching](https://github.com/Mythologyli/qBittorrent-NAT-TCP-Hole-Punching)
+  - [Natter](https://github.com/MikeWang000000/Natter)
+  - [natmap](https://github.com/heiher/natmap)
