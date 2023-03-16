@@ -69,6 +69,9 @@
   ```
   curl http://192.268.0.74/update-qb.sh --output update-qb.sh
   ```
+- uTorrent（2.2.1以前）的 WebUI 无法访问，因为默认没安装
+
+  可在本仓库下载 [webui.zip](/webui.zip) 置于 uTorrent 根目录下以启用
 
 # 参考
   - https://github.com/Mythologyli/qBittorrent-NAT-TCP-Hole-Punching
