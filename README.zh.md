@@ -1,5 +1,8 @@
 # bittorrent-NAT-hole-punching
  NAT 自动打洞脚本用于 uTorrent/qBittorrent
+# 原理
+ - NAT Full Cone (NAT1) NAT全锥形网络允许打开的端口接收来自任意IP的访问数据，保持该端口开放，
+   并通知 Tracker 从该端口访问，可使原本处于NAT内网环境下的 BT 软件获得接近公网环境的连接性
 
 # 使用方法
 1. 下载 [natmap](https://github.com/heiher/natmap)
