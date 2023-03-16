@@ -41,7 +41,7 @@
    ```
    more details see [natmap](https://github.com/heiher/natmap)
 ## Startup 
-  - Edit `/etc/rc.local`, for example
+- Edit `/etc/rc.local`, for example
   ```
   sleep 60
   /root/app/natmap -d -s stunserver.stunprotocol.org -h qq.com -b 3333 -e /root/app/ut/update-ut.sh
