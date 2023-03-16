@@ -39,13 +39,37 @@
    ```
    细节请查看 [natmap](https://github.com/heiher/natmap)
 ## 让脚本自动运行
-  - 编辑 `/etc/rc.local`, 比如
+- 编辑 `/etc/rc.local`, 比如
   ```
   sleep 60
   /root/app/natmap -d -s stunserver.stunprotocol.org -h qq.com -b 3333 -e /root/app/ut/update-ut.sh
   exit 0
   ```
-  以上命令会令路由器启动完毕后，自动运行 natmap
+  以上命令会使路由器启动完毕后，自动运行 natmap
+
+
+# 其他注意事项
+- 确保路由器已安装命令 `iptables` `curl`
+
+  在 OpenWrt 可按以下命令安装：
+  ```
+  opkg update
+  opkg install iptables
+  opkg install curl
+  ```
+- 本地编辑好的脚本文件怎么传到路由器上？
+
+  可以先在本地建一个文件服务器，比如使用[caddy](https://caddyserver.com/download)，下载后，打开cmd，运行
+  ```
+  caddy.exe file-server --browse --root D:\Downloads
+  ```
+  其中 `D:\Downloads` 即允许在网页上访问的目录，在浏览器上打开 127.0.0.1 可访问（可改为局域网地址访问，比如192.168.0.74）
+  
+  将`update-qb.sh`放在`D:\Downloads`内，在路由器上，运行以下命令即可下载到路由器上
+  ```
+  curl http://192.268.0.74/update-qb.sh --output update-qb.sh
+  ```
+
 # 参考
   - https://github.com/Mythologyli/qBittorrent-NAT-TCP-Hole-Punching
   - https://github.com/MikeWang000000/Natter
