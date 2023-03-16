@@ -79,9 +79,9 @@
 - uTorrent（2.2.1以前）默认未安装 WebUI
 
   可在本仓库下载 [webui.zip](/webui.zip) 置于 uTorrent 根目录下以启用（不用解压）
-- 当 BT 客户端未运行
+- 不定期运行 BT 客户端，脚本也能正常工作吗？
 
-  脚本每2分钟检查一次 BT 客户端是否在线，在线后停止检查
+  可以。脚本每2分钟检查一次 BT 客户端是否在线，若在，设置端口后停止检查（下次变更端口会再次重复这个过程）
 
 # 参考
   - [qBittorrent-NAT-TCP-Hole-Punching](https://github.com/Mythologyli/qBittorrent-NAT-TCP-Hole-Punching)
