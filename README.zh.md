@@ -1,52 +1,52 @@
 # bittorrent-NAT-hole-punching
- NAT hole punching, script for uTorrent/qBittorrent
+ NAT 自动打洞脚本用于 uTorrent/qBittorrent
 
-# Usage
-1. Download [natmap](https://github.com/heiher/natmap)
+# 使用方法
+1. 下载 [natmap](https://github.com/heiher/natmap)
 
-2. Download `update-ut.sh` (for uTorrrent) / `update-qb.sh` (for qBittorrent)
+2. 下载 `update-ut.sh` (用于 uTorrrent) 或 `update-qb.sh` (用于 qBittorrent)
 
-3. Edit the following fields with your need:
+3. 根据你的情况编辑以下项:
    - update-ut.sh (uTrorrent)
    ```
    # utorrent
 
-   interface="pppoe-wan"  # wan interface where port bind to, leave this field empty if doubt
-   host="192.168.0.74"    # host where your bittorrent client is running on
-   web_port="4444"        # WebUI port
-   username="admin"       # WebUI user
-   password="123456"      # WebUI password
-   set_tracker_ip=1       # whether set external ip (report to tracker) or not, 1 for true, otherwise false
+   interface="pppoe-wan"  # 端口绑定的 interface，若不知道这是什么请留空
+   host="192.168.0.74"    # 你的 uTrorrent 运行的主机地址
+   web_port="4444"        # uTrorrent WebUI 端口
+   username="admin"       # WebUI 用户名
+   password="123456"      # WebUI 密码
+   set_tracker_ip=1       # 是否设置 报告给tracker的公网IP，1表示 是，其他值 否
    ```
    
    - update-qb.sh (qBittorrent)
    ```
    # qBittorrent
 
-   interface="pppoe-wan"  # wan interface where port bind to, leave this field empty if doubt
-   host="192.168.0.74"    # host where your bittorrent client is running on
-   web_port="5555"        # WebUI port
-   username="admin"       # WebUI user
-   password="123456"      # WebUI password
+   interface="pppoe-wan"  # 端口绑定的 interface，若不知道这是什么请留空
+   host="192.168.0.74"    # 你的 qBittorrent 运行的主机地址
+   web_port="5555"        # qBittorrent WebUI 端口
+   username="admin"       # WebUI 用户名
+   password="123456"      # WebUI 密码
    ```
-4. Save above files to your router device and give script excute permission: `chmod +x /root/app/ut/update-ut.sh`
-5. Run command, for example, `/root/app/natmap -d -s stunserver.stunprotocol.org -h qq.com -b 3333 -e /root/app/ut/update-ut.sh`
+4. 保存以上文件到路由器上，并添加脚本'执行'权限: `chmod +x /root/app/ut/update-ut.sh`
+5. 运行命令，例如, `/root/app/natmap -d -s stunserver.stunprotocol.org -h qq.com -b 3333 -e /root/app/ut/update-ut.sh`
    ```
-   /root/app/natmap            path of natmap
-   -d                          run as deamon
-   -b 3333                     bind port, any port from 1024-65535 is ok
-   /root/app/ut/update-ut.sh   path of script
+   /root/app/natmap            natmap 路径
+   -d                          以 deamon 模式运行
+   -b 3333                     绑定的端口，任意在 1024-65535 之间的端口都可以
+   /root/app/ut/update-ut.sh   脚本路径
    ```
-   more details see [natmap](https://github.com/heiher/natmap)
-## Startup 
-  - Edit `/etc/rc.local`, for example
+   细节请查看 [natmap](https://github.com/heiher/natmap)
+## 让脚本自动运行
+  - 编辑 `/etc/rc.local`, 比如
   ```
   sleep 60
   /root/app/natmap -d -s stunserver.stunprotocol.org -h qq.com -b 3333 -e /root/app/ut/update-ut.sh
   exit 0
   ```
-  That will make program always run on startup
-# Reference
+  以上命令会令路由器启动完毕后，自动运行 natmap
+# 参考
   - https://github.com/Mythologyli/qBittorrent-NAT-TCP-Hole-Punching
   - https://github.com/MikeWang000000/Natter
   - https://github.com/heiher/natmap
