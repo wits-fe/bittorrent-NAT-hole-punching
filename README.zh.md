@@ -1,6 +1,6 @@
 # bittorrent-NAT-hole-punching
  NAT hole punching, script for uTorrent/qBittorrent
- [中文文档](/README.zh.md)
+
 # Usage
 1. Download [natmap](https://github.com/heiher/natmap)
 
