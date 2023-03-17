@@ -10,7 +10,7 @@
    Because the port opened by the hole punching software is random, 
    the BT client needs to change the listen port to match it so that other users can connect to.
 
-   Once open port is established, this script will inform the BT client to set the listen port then add route-forwarding rules to bypass firewall.
+   Once open port is established, this script will inform the BT client to set the listen port then add route-forwarding rules.
 
 # Prerequisites
  - Make sure that `iptables` `curl` is installed on your system
