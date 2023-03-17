@@ -7,7 +7,21 @@
    打洞软件打通的端口是随机的，所以 BT 客户端要让其他用户能访问到就需要变更端口与该端口一致
    
    当端口打开后，通知 BT 客户端设置端口，添加路由转发规则就是这个脚本所做的事情
+   
+# 要求
+- 确保路由器已安装命令 `iptables` `curl`
 
+  在 OpenWrt 可按以下命令安装：
+  ```
+  opkg update
+  opkg install iptables
+  opkg install curl
+  ```
+- 在你的 BT 客户端上启用 Web UI
+- 注意 uTorrent（2.2.1以前）默认未安装 WebUI
+
+  可在本仓库下载 [webui.zip](/webui.zip) 置于 uTorrent 根目录下以启用（不用解压）
+  
 # 使用方法
 1. 下载 [natmap](https://github.com/heiher/natmap)
 
@@ -54,16 +68,7 @@
   ```
   以上命令会使路由器启动完毕后，自动运行 natmap
 
-
-# 其他注意事项
-- 确保路由器已安装命令 `iptables` `curl`
-
-  在 OpenWrt 可按以下命令安装：
-  ```
-  opkg update
-  opkg install iptables
-  opkg install curl
-  ```
+## 可能遇到的问题
 - 本地编辑好的脚本文件怎么传到路由器上？
 
   可以先在本地建一个文件服务器，比如使用 [caddy](https://caddyserver.com/download)，下载后，打开cmd，运行
@@ -76,14 +81,14 @@
   ```
   curl http://192.268.0.74/update-qb.sh --output update-qb.sh
   ```
-- uTorrent（2.2.1以前）默认未安装 WebUI
 
-  可在本仓库下载 [webui.zip](/webui.zip) 置于 uTorrent 根目录下以启用（不用解压）
 - 不定期运行 BT 客户端，脚本也能正常工作吗？
 
   可以。脚本每2分钟检查一次 BT 客户端是否在线，若在，设置端口后停止检查（下次变更端口会再次重复这个过程）
 
 # 参考
-  - [qBittorrent-NAT-TCP-Hole-Punching](https://github.com/Mythologyli/qBittorrent-NAT-TCP-Hole-Punching)
   - [Natter](https://github.com/MikeWang000000/Natter)
   - [natmap](https://github.com/heiher/natmap)
+  - [qBittorrent-NAT-TCP-Hole-Punching](https://github.com/Mythologyli/qBittorrent-NAT-TCP-Hole-Punching)
+  - [uTorrent Web UI API](https://github.com/bittorrent/webui/wiki/Web-UI-API)
+  - [qBittorrent Web UI API](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1))
