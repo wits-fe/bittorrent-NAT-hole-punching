@@ -4,14 +4,29 @@
  [中文](/README.zh.md)
  
 # Description
- - Full Cone NAT (NAT1) allows the open port to receive data from any IP, keep a port open, then report it to the tracker, send/receive data with that port,
-   which will make BT clients that are behind the NAT open to public.
+ - Full Cone NAT (NAT1) allows the open port to receive data from any IP, keep the port open, then report it to the tracker, send/receive data with that port,
+   which makes BT clients that are behind the NAT open to public.
 
    Because the port opened by the hole punching software is random, 
    the BT client needs to change the listen port to match it so that other users can connect to.
 
    Once open port is established, this script will inform the BT client to set the listen port then add route-forwarding rules to bypass firewall.
 
+# Prerequisites
+ - Make sure that `iptables` `curl` is installed on your system
+ 
+   On OpenWrt you can use following command to install：
+   ```
+   opkg update
+   opkg install iptables
+   opkg install curl
+   ```
+ - Enable Web UI on your BT client
+
+ - Note that WebUI isn't installed by default on uTorrent (before 2.2.1)
+   
+   To install:  Download [webui.zip](/webui.zip) from this repo, put it into the root path of uTorrent. (no need to unzip)
+   
 # Usage
 1. Download [natmap](https://github.com/heiher/natmap)
 
@@ -58,6 +73,8 @@
   ```
   That will make program always run on startup
 # Reference
-  - [qBittorrent-NAT-TCP-Hole-Punching](https://github.com/Mythologyli/qBittorrent-NAT-TCP-Hole-Punching)
   - [Natter](https://github.com/MikeWang000000/Natter)
   - [natmap](https://github.com/heiher/natmap)
+  - [qBittorrent-NAT-TCP-Hole-Punching](https://github.com/Mythologyli/qBittorrent-NAT-TCP-Hole-Punching)
+  - [uTorrent Web UI API](https://github.com/bittorrent/webui/wiki/Web-UI-API)
+  - [qBittorrent Web UI API](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1))
