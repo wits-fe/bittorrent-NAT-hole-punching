@@ -8,9 +8,9 @@
    which will make BT clients that are behind the NAT open to public.
 
    Because the port opened by the hole punching software is random, 
-   the BT client needs to change the port to match it so that other users can connect to.
+   the BT client needs to change the listen port to match it so that other users can connect to.
 
-   That informing the BT client to set the random-opened port, adding route-forwarding rules is what this script does.
+   Once open port is established, this script will inform the BT client to set the listen port then add route-forwarding rules to bypass firewall.
 
 # Usage
 1. Download [natmap](https://github.com/heiher/natmap)
