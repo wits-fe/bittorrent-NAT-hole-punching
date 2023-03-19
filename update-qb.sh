@@ -22,7 +22,7 @@ interface=""
 host="192.168.0.74"
 web_port="5555"
 username="admin"
-password="123456"
+password="12345"
 
 # Update qBittorrent listen port.
 
@@ -31,12 +31,28 @@ retry_interval=117
 
 rsf="$script_dir/qbs_running"
 rs=0
-wait_to_exit=$(( $retry_interval + 10 ))
+rs_b=0
+wait_to_exit=$(( $retry_interval + 15 ))
 
 if [ -f $rsf ]
 then
-  echo 1 > $rsf
+  rs=$(cat $rsf)
+  rs=$(( $rs + 1 ))
+  echo $rs > $rsf
   sleep $wait_to_exit
+  
+  if [ ! -f $rsf ]
+  then
+    exit 100
+  fi
+  
+  rs_b=$(cat $rsf)
+  
+  if [ $rs -ne $rs_b ]
+  then
+    exit $rs
+  fi
+  
   echo 0 > $rsf
 else
   echo 0 > $rsf
@@ -49,11 +65,16 @@ qb_cookie=nul
 # ( Loop last 48 hours unless this script is invoked again or app is online. )
 while [ $x -le 1440 ]
 do
+  if [ ! -f $rsf ]
+  then
+    exit 101
+  fi
+  
   rs=$(cat $rsf)
-  if [ $rs -eq 1 ]
+  if [ $rs -gt 0 ]
   then
     echo 'Another running script detected, exit.'
-    exit 2
+    exit 111
   fi
   
   qb_cookie=$(curl -m 3 -s -i --data "username=$username&password=$password" http://$host:$web_port/api/v2/auth/login | grep -i set-cookie | cut -c13-48)
@@ -62,7 +83,7 @@ do
   then
     echo "Update qBittorrent listen port to $public_port.."
     
-    curl -X POST -b "$qb_cookie" -d 'json={"listen_port":"'$port'"}' "http://192.168.0.74:5555/api/v2/app/setPreferences"
+    curl -m 5 -s -X POST -b "$qb_cookie" -d 'json={"listen_port":"'$port'"}' "http://$host:$web_port/api/v2/app/setPreferences"
     break
   fi
   x=$(( $x + 1 ))
@@ -104,3 +125,4 @@ $d_rule
 rm $rsf
 
 echo Fin
+exit 0

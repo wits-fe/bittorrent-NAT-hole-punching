@@ -22,7 +22,7 @@ interface=""
 host="192.168.0.74"
 web_port="4444"
 username="admin"
-password="123456"
+password="12345"
 set_tracker_ip=1
 
 # Update utorrent listen port.
@@ -32,12 +32,28 @@ retry_interval=117
 
 rsf="$script_dir/uts_running"
 rs=0
-wait_to_exit=$(( $retry_interval + 10 ))
+rs_b=0
+wait_to_exit=$(( $retry_interval + 15 ))
 
 if [ -f $rsf ]
 then
-  echo 1 > $rsf
+  rs=$(cat $rsf)
+  rs=$(( $rs + 1 ))
+  echo $rs > $rsf
   sleep $wait_to_exit
+  
+  if [ ! -f $rsf ]
+  then
+    exit 100
+  fi
+  
+  rs_b=$(cat $rsf)
+  
+  if [ $rs -ne $rs_b ]
+  then
+    exit $rs
+  fi
+  
   echo 0 > $rsf
 else
   echo 0 > $rsf
@@ -50,11 +66,16 @@ ut_token=nul
 # ( Loop last 48 hours unless this script is invoked again or app is online. )
 while [ $x -le 1440 ]
 do
+  if [ ! -f $rsf ]
+  then
+    exit 101
+  fi
+  
   rs=$(cat $rsf)
-  if [ $rs -eq 1 ]
+  if [ $rs -gt 0 ]
   then
     echo 'Another running script detected, exit.'
-    exit 2
+    exit 111
   fi
   
   ut_token=$(curl -m 3 -s -u $username:$password http://$host:$web_port/gui/token.html | grep -o '<div.*div>' | grep -o '>.*<' | sed -e 's/>\(.*\)</\1/')
@@ -65,9 +86,9 @@ do
     
     if [ $set_tracker_ip -eq 1 ]
     then
-      curl -u $username:$password "http://$host:$web_port/gui/?token=$ut_token&action=setsetting&s=bind_port&v=$port&s=tracker_ip&v=$public_addr" >/dev/null 2>&1
+      curl -m 5 -s -u $username:$password "http://$host:$web_port/gui/?token=$ut_token&action=setsetting&s=bind_port&v=$port&s=tracker_ip&v=$public_addr" >/dev/null 2>&1
     else
-      curl -u $username:$password "http://$host:$web_port/gui/?token=$ut_token&action=setsetting&s=bind_port&v=$port" >/dev/null 2>&1
+      curl -m 5 -s -u $username:$password "http://$host:$web_port/gui/?token=$ut_token&action=setsetting&s=bind_port&v=$port" >/dev/null 2>&1
     fi
     break
   fi
@@ -110,3 +131,4 @@ $d_rule
 rm $rsf
 
 echo Fin
+exit 0
