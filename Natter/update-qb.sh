@@ -3,12 +3,12 @@
 script=$(readlink -f "$0")
 script_dir=$(dirname "$script")
 
-# natmap
-public_addr=$1
-public_port=$2
-ip4p=$3
-private_port=$4
-protocol=$5
+# Natter
+protocol=$1
+inner_ip=$2
+private_port=$3
+public_addr=$4
+public_port=$5
 
 port=$public_port
 

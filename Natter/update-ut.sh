@@ -3,12 +3,12 @@
 script=$(readlink -f "$0")
 script_dir=$(dirname "$script")
 
-# natmap
-public_addr=$1
-public_port=$2
-ip4p=$3
-private_port=$4
-protocol=$5
+# Natter
+protocol=$1
+inner_ip=$2
+private_port=$3
+public_addr=$4
+public_port=$5
 
 port=$public_port
 
@@ -16,21 +16,21 @@ echo
 echo "External IP - $public_addr:$public_port, bind port $private_port, $protocol"
 echo 
 
-# qBittorrent
+# utorrent
 
 interface=""
 host="192.168.0.74"
-web_port="5555"
+web_port="4444"
 username="admin"
 password="12345"
-set_announce_ip=0
+set_tracker_ip=1
 
-# Update qBittorrent listen port.
+# Update utorrent listen port.
 
 retry_interval=117
 
 
-rsf="$script_dir/qbs_running"
+rsf="$script_dir/uts_running"
 rs=0
 rs_b=0
 wait_to_exit=$(( $retry_interval + 15 ))
@@ -60,7 +60,7 @@ else
 fi
 
 x=1
-qb_cookie=nul
+ut_token=nul
 
 # If app isn't online, try 117 seconds later. 
 # ( Loop last 48 hours unless this script is invoked again or app is online. )
@@ -78,17 +78,17 @@ do
     exit 111
   fi
   
-  qb_cookie=$(curl -m 3 -s -i --data "username=$username&password=$password" http://$host:$web_port/api/v2/auth/login | grep -i set-cookie | cut -c13-48)
+  ut_token=$(curl -m 3 -s -u $username:$password http://$host:$web_port/gui/token.html | grep -o '<div.*div>' | grep -o '>.*<' | sed -e 's/>\(.*\)</\1/')
   
-  if [[ $(expr match "$qb_cookie" '.\+=') -gt 3 ]]
+  if [[ $(expr match "$ut_token" '.\+=') -gt 8 ]]
   then
-    echo "Update qBittorrent listen port to $public_port.."
+    echo "update utorrent listen port to $public_port.."
     
-    if [ $set_announce_ip -eq 1 ]
+    if [ $set_tracker_ip -eq 1 ]
     then
-      curl -m 5 -s -X POST -b "$qb_cookie" -d 'json={"listen_port":"'$port'","announce_ip":"'$public_addr'"}' "http://$host:$web_port/api/v2/app/setPreferences" >/dev/null 2>&1
+      curl -m 5 -s -u $username:$password "http://$host:$web_port/gui/?token=$ut_token&action=setsetting&s=bind_port&v=$port&s=tracker_ip&v=$public_addr" >/dev/null 2>&1
     else
-      curl -m 5 -s -X POST -b "$qb_cookie" -d 'json={"listen_port":"'$port'"}' "http://$host:$web_port/api/v2/app/setPreferences" >/dev/null 2>&1
+      curl -m 5 -s -u $username:$password "http://$host:$web_port/gui/?token=$ut_token&action=setsetting&s=bind_port&v=$port" >/dev/null 2>&1
     fi
     break
   fi
@@ -100,7 +100,7 @@ done
 
 echo 
 
-tdrsh="$script_dir/qbs_tdr"
+tdrsh="$script_dir/uts_tdr"
 
 if [ -f $tdrsh ]
 then
