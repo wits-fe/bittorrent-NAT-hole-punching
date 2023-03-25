@@ -28,10 +28,12 @@
    To install:  Download [webui.zip](/webui.zip) from this repo, put it into the root path of uTorrent. (no need to unzip)
    
 # Usage
-1. Download [natmap](https://github.com/heiher/natmap)
+1. Download [natmap](https://github.com/heiher/natmap) / [Natter](https://github.com/MikeWang000000/Natter)(ver 0.9 above)
 
 2. Download `update-ut.sh` (for uTorrrent) / `update-qb.sh` (for qBittorrent)
-
+   
+   Or download the ones in the folder [Natter](/Natter) if you use Natter.
+   
 3. Edit the following fields with your need:
    - update-ut.sh (uTrorrent)
    ```
@@ -54,16 +56,18 @@
    web_port="5555"        # WebUI port
    username="admin"       # WebUI user
    password="123456"      # WebUI password
+   set_announce_ip=0      # whether set external ip or not, 1 for true, otherwise false
    ```
 4. Save above files to your router device and give script excute permission: `chmod +x /root/app/ut/update-ut.sh`
 5. Run command, for example, `/root/app/natmap -d -s stunserver.stunprotocol.org -h qq.com -b 3333 -e /root/app/ut/update-ut.sh`
    ```
    /root/app/natmap            path of natmap
-   -d                          run as deamon
+   -d                          run as daemon
    -b 3333                     bind port, any port from 1024-65535 is ok
    /root/app/ut/update-ut.sh   path of script
    ```
-   more details see [natmap](https://github.com/heiher/natmap)
+   more details see [natmap](https://github.com/heiher/natmap) / [Natter](https://github.com/MikeWang000000/Natter)(ver 0.9 above)
+
 ## Startup 
 - Edit `/etc/rc.local`, for example
   ```
@@ -72,6 +76,7 @@
   exit 0
   ```
   That will make program always run on startup
+
 # Reference
   - [Natter](https://github.com/MikeWang000000/Natter)
   - [natmap](https://github.com/heiher/natmap)
