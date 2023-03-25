@@ -23,9 +23,11 @@
   可在本仓库下载 [webui.zip](/webui.zip) 置于 uTorrent 根目录下以启用（不用解压）
   
 # 使用方法
-1. 下载 [natmap](https://github.com/heiher/natmap)
+1. 下载 [natmap](https://github.com/heiher/natmap) / [Natter](https://github.com/MikeWang000000/Natter) (0.9版以上)
 
 2. 下载 `update-ut.sh` (用于 uTorrrent) 或 `update-qb.sh` (用于 qBittorrent)
+   
+   如果使用Natter，下载文件夹[Natter](/Natter)内的对应脚本
 
 3. 根据你的情况编辑以下项:
    - update-ut.sh (uTrorrent)
@@ -49,16 +51,18 @@
    web_port="5555"        # qBittorrent WebUI 端口
    username="admin"       # WebUI 用户名
    password="123456"      # WebUI 密码
+   set_announce_ip=0      # 是否设置 报告给tracker的公网IP，1表示 是，其他值 否
    ```
 4. 保存以上文件到路由器上，并添加脚本'执行'权限: `chmod +x /root/app/ut/update-ut.sh`
 5. 运行命令，例如, `/root/app/natmap -d -s stunserver.stunprotocol.org -h qq.com -b 3333 -e /root/app/ut/update-ut.sh`
    ```
    /root/app/natmap            natmap 路径
-   -d                          以 deamon 模式运行
+   -d                          以 daemon 模式运行
    -b 3333                     绑定的端口，任意在 1024-65535 之间的端口都可以
    /root/app/ut/update-ut.sh   脚本路径
    ```
-   命令细节请查看 [natmap](https://github.com/heiher/natmap)
+   命令细节请查看 [natmap](https://github.com/heiher/natmap) / [Natter](https://github.com/MikeWang000000/Natter) (0.9版以上)
+
 ## 让脚本自动运行
 - 编辑 `/etc/rc.local`, 比如
   ```
@@ -81,7 +85,9 @@
   ```
   curl http://192.268.0.74/update-qb.sh --output update-qb.sh
   ```
-
+  
+  或使用 scp 命令上传 （安装Putty后，在Windows命令行使用）
+  
 - 不定期运行 BT 客户端，脚本也能正常工作吗？
 
   可以。脚本每2分钟检查一次 BT 客户端是否在线，若在，设置端口并停止检查（下次变更端口会再次重复这个过程）
