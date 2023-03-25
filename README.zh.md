@@ -54,6 +54,7 @@
    set_announce_ip=0      # 是否设置 报告给tracker的公网IP，1表示 是，其他值 否
    ```
 4. 保存以上文件到路由器上，并添加脚本'执行'权限: `chmod +x /root/app/ut/update-ut.sh`
+
 5. 运行命令，例如, `/root/app/natmap -d -s stunserver.stunprotocol.org -h qq.com -b 3333 -e /root/app/ut/update-ut.sh`
    ```
    /root/app/natmap            natmap 路径
@@ -75,18 +76,22 @@
 ## 可能遇到的问题
 - 本地编辑好的脚本文件怎么传到路由器上？
 
-  可以先在本地建一个文件服务器，比如使用 [caddy](https://caddyserver.com/download)，下载后，打开cmd，运行
-  ```
-  caddy.exe file-server --browse --root D:\Downloads
-  ```
-  其中 `D:\Downloads` 即允许在网页上访问的目录，在浏览器上打开 127.0.0.1 可访问（可改为局域网地址访问，比如192.168.0.74）
+  - 使用`scp`命令上传 （安装 [Putty](https://www.putty.org) 后，在Windows命令行使用）， 比如
+    ```
+    scp  d:\temp\natmap root@192.168.0.1:/root/app/qb/natmap
+    ```
+    其中`192.168.0.1` 为路由器IP。命令上传 `d:\temp\natmap` 到 `/root/app/qb/natmap`
   
-  将`update-qb.sh`放在`D:\Downloads`内，在路由器上，运行以下命令即可下载到路由器上
-  ```
-  curl http://192.268.0.74/update-qb.sh --output update-qb.sh
-  ```
+  - 或在本地建一个文件服务器，比如使用 [caddy](https://caddyserver.com/download)，下载后，打开cmd，运行
+    ```
+    caddy.exe file-server --browse --root D:\Downloads
+    ```
+    其中 `D:\Downloads` 即允许在网页上访问的目录，在浏览器上打开 127.0.0.1 可访问（可改为局域网地址访问，比如192.168.0.74）
   
-  或使用 scp 命令上传 （安装Putty后，在Windows命令行使用）
+    将`update-qb.sh`放在`D:\Downloads`内，在路由器上，运行以下命令即可下载到路由器上
+    ```
+    curl http://192.268.0.74/update-qb.sh --output update-qb.sh
+    ```
   
 - 不定期运行 BT 客户端，脚本也能正常工作吗？
 
