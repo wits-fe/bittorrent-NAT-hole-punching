@@ -124,13 +124,13 @@ fi
 echo "Add rule"
 
 retry_on_fail() {
-  sh -c "$1"
+  $1
   if [ $? != '0' ]; then
     sleep 1
-    sh -c "$1"
+    $1
     if [ $? != '0' ]; then
       sleep 2
-      sh -c "$1"
+      $1
     fi
   fi
 }
@@ -139,21 +139,11 @@ d_rule="iptables -t nat -D PREROUTING -i $interface -p $protocol --dport $privat
 d_rule2=""
 d_rule3=""
 
-insert_num=1
-num_tmp=$(retry_on_fail "iptables -t nat -nvL PREROUTING --line-number | grep 'delegate_prerouting' | head -n 1 | grep -o '^[0-9]\+'")
-if [ "$num_tmp" -gt 0 ]; then
-  insert_num=$num_tmp
-fi
-retry_on_fail "iptables -t nat -I PREROUTING $insert_num -i $interface -p $protocol --dport $private_port -j DNAT --to-destination $host:$port"
+retry_on_fail "iptables -t nat -I PREROUTING -i $interface -p $protocol --dport $private_port -j DNAT --to-destination $host:$port"
 
 if [ $forward_ipv6 -eq 1 ]; then
-  insert_num=1
-  num_tmp=$(retry_on_fail "ip6tables -t filter -nvL FORWARD --line-number | grep 'delegate_forward' | head -n 1 | grep -o '^[0-9]\+'")
-  if [ "$num_tmp" -gt 0 ]; then
-    insert_num=$num_tmp
-  fi
-  retry_on_fail "ip6tables -t filter -I FORWARD $insert_num -i $interface -p udp --dport $port -j ACCEPT"
-  retry_on_fail "ip6tables -t filter -I FORWARD $insert_num -i $interface -p tcp --dport $port -j ACCEPT"
+  retry_on_fail "ip6tables -t filter -I FORWARD -i $interface -p udp --dport $port -j ACCEPT"
+  retry_on_fail "ip6tables -t filter -I FORWARD -i $interface -p tcp --dport $port -j ACCEPT"
   d_rule2="ip6tables -t filter -D FORWARD -i $interface -p udp --dport $port -j ACCEPT"
   d_rule3="ip6tables -t filter -D FORWARD -i $interface -p tcp --dport $port -j ACCEPT"
 fi
