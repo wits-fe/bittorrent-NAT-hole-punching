@@ -34,24 +34,28 @@
    ```
    # utorrent
 
-   interface="pppoe-wan"  # 端口绑定的 interface，若不知道这是什么请留空
+   interface="pppoe-wan2" # 入口流量经过的interface，通常是pppoe-wan，
+                          # 设置为 ppp+ 表示所有以ppp开头的interface
    host="192.168.0.74"    # 你的 uTrorrent 运行的主机地址
    web_port="4444"        # uTrorrent WebUI 端口
    username="admin"       # WebUI 用户名
    password="123456"      # WebUI 密码
-   set_tracker_ip=1       # 是否设置 报告给tracker的公网IP，1表示 是，其他值 否
+   set_tracker_ip=1       # 是否设置 <报告给tracker的公网IP>，1表示 是，其他值 否
+   forward_ipv6=1         # 在这个端口放行IPv6流量(开放IPv6端口) , 1 : 启用
    ```
    
    - update-qb.sh (qBittorrent)
    ```
    # qBittorrent
 
-   interface="pppoe-wan"  # 端口绑定的 interface，若不知道这是什么请留空
+   interface="pppoe-wan"  # 入口流量经过的interface，通常是pppoe-wan，
+                          # 设置为 ppp+ 表示所有以ppp开头的interface
    host="192.168.0.74"    # 你的 qBittorrent 运行的主机地址
    web_port="5555"        # qBittorrent WebUI 端口
    username="admin"       # WebUI 用户名
    password="123456"      # WebUI 密码
-   set_announce_ip=0      # 是否设置 报告给tracker的公网IP，1表示 是，其他值 否
+   set_announce_ip=0      # 是否设置 <报告给tracker的公网IP>，1表示 是，其他值 否
+   forward_ipv6=0         # 开放IPv6端口, 0 : 不启用
    ```
 4. 保存以上文件到路由器上，并添加脚本'执行'权限: `chmod +x /root/app/ut/update-ut.sh`
 
@@ -95,7 +99,7 @@
   
 - 不定期运行 BT 客户端，脚本也能正常工作吗？
 
-  可以。脚本每2分钟检查一次 BT 客户端是否在线，若在，设置端口并停止检查（下次变更端口会再次重复这个过程）
+  可以。脚本每1分钟检查一次 BT 客户端是否在线，若在，设置端口并停止检查（下次变更端口会再次重复这个过程）
   
 - 如何确认开放端口成功？
   - uTorrent 的话比较简单 ： 

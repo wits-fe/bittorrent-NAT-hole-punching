@@ -39,24 +39,26 @@
    ```
    # utorrent
 
-   interface="pppoe-wan"  # wan interface where port bind to, leave this field empty if doubt
+   interface="pppoe-wan"  # wan interface where port bind to, leave this field untouch if doubt
    host="192.168.0.74"    # host where your bittorrent client is running on
    web_port="4444"        # WebUI port
    username="admin"       # WebUI user
    password="123456"      # WebUI password
    set_tracker_ip=1       # whether set external ip (report to tracker) or not, 1 for true, otherwise false
+   forward_ipv6=1         # open port on IPv6, 1 : enable
    ```
    
    - update-qb.sh (qBittorrent)
    ```
    # qBittorrent
 
-   interface="pppoe-wan"  # wan interface where port bind to, leave this field empty if doubt
+   interface="pppoe-wan"  # wan interface where port bind to, leave this field untouch if doubt
    host="192.168.0.74"    # host where your bittorrent client is running on
    web_port="5555"        # WebUI port
    username="admin"       # WebUI user
    password="123456"      # WebUI password
    set_announce_ip=0      # whether set external ip or not, 1 for true, otherwise false
+   forward_ipv6=0         # open port on IPv6, 0 : disable
    ```
 4. Save above files to your router device and give script excute permission: `chmod +x /root/app/ut/update-ut.sh`
 5. Run command, for example, `/root/app/natmap -d -s stunserver.stunprotocol.org -h qq.com -b 3333 -e /root/app/ut/update-ut.sh`
