@@ -1,5 +1,5 @@
 # bittorrent-NAT-hole-punching
- NAT hole punching, script for uTorrent/qBittorrent
+ NAT hole punching, script for uTorrent/qBittorrent/Transmission
  
  [中文](/README.zh.md)
  
@@ -30,14 +30,14 @@
 # Usage
 1. Download [natmap](https://github.com/heiher/natmap) / [Natter](https://github.com/MikeWang000000/Natter)(ver 0.9 above)
 
-2. Download `update-ut.sh` (for uTorrrent) / `update-qb.sh` (for qBittorrent)
+2. Download `update-ut.sh` (for uTorrrent) / `update-qb.sh` (for qBittorrent) / `update-tr.sh` (for Transmission)
    
    Or download the ones in the folder [Natter](/Natter) if you use Natter.
    
 3. Edit the following fields with your need:
    - update-ut.sh (uTrorrent)
    ```
-   # utorrent
+   # uTorrent
 
    interface="pppoe-wan"  # wan interface where port bind to, leave this field untouch if doubt
    host="192.168.0.74"    # host where your bittorrent client is running on
@@ -59,6 +59,18 @@
    password="123456"      # WebUI password
    set_announce_ip=0      # whether set external ip or not, 1 for true, otherwise false
    forward_ipv6=0         # open port on IPv6, 0 : disable
+   ```
+   
+   - update-tr.sh (Transmission)
+   ```
+   # Transmission
+
+   interface="ppp+"       # wan interface where port bind to, leave this field untouch if doubt
+   host="192.168.0.74"    # host where your bittorrent client is running on
+   web_port="9091"        # WebUI port
+   username="admin"       # WebUI user
+   password="123456"      # WebUI password
+   forward_ipv6=1         # open port on IPv6, 1 : enable
    ```
 4. Save above files to your router device and give script excute permission: `chmod +x /root/app/ut/update-ut.sh`
 5. Run command, for example, `/root/app/natmap -d -s stunserver.stunprotocol.org -h qq.com -b 3333 -e /root/app/ut/update-ut.sh`
@@ -85,3 +97,4 @@
   - [qBittorrent-NAT-TCP-Hole-Punching](https://github.com/Mythologyli/qBittorrent-NAT-TCP-Hole-Punching)
   - [uTorrent Web UI API](https://github.com/bittorrent/webui/wiki/Web-UI-API)
   - [qBittorrent Web UI API](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1))
+  - [Transmission Web UI API](https://github.com/transmission/transmission/blob/main/docs/rpc-spec.md)

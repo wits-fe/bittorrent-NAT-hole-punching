@@ -1,5 +1,5 @@
 # bittorrent-NAT-hole-punching
- NAT 自动打洞脚本用于 uTorrent/qBittorrent
+ NAT 自动打洞脚本用于 uTorrent/qBittorrent/Transmission
 # 脚本说明
 - NAT Full Cone (NAT1) NAT全锥形网络允许打开的端口接收来自任意IP的访问数据，保持该端口开放，
   并报告 Tracker 让其他用户从该端口访问，可使原本处于NAT内网环境下的 BT 客户端获得近似公网环境的连接性。
@@ -25,7 +25,7 @@
 # 使用方法
 1. 下载 [natmap](https://github.com/heiher/natmap) / [Natter](https://github.com/MikeWang000000/Natter) (0.9版以上)
 
-2. 下载 `update-ut.sh` (用于 uTorrrent) 或 `update-qb.sh` (用于 qBittorrent)
+2. 下载 `update-ut.sh` (用于 uTorrrent) 或 `update-qb.sh` (用于 qBittorrent) 或 `update-tr.sh` (用于 Transmission)
    
    如果使用Natter，下载文件夹[Natter](/Natter)内的对应脚本
 
@@ -56,6 +56,19 @@
    password="123456"      # WebUI 密码
    set_announce_ip=0      # 是否设置 <报告给tracker的公网IP>，1表示 是，其他值 否
    forward_ipv6=0         # 开放IPv6端口, 0 : 不启用
+   ```
+   
+   - update-tr.sh (Transmission)
+   ```
+   # Transmission
+
+   interface="pppoe-wan"  # 入口流量经过的interface，通常是pppoe-wan，
+                          # 设置为 ppp+ 表示所有以ppp开头的interface
+   host="192.168.0.74"    # 你的 Transmission 运行的主机地址
+   web_port="9091"        # Transmission WebUI 端口
+   username="admin"       # WebUI 用户名
+   password="123456"      # WebUI 密码
+   forward_ipv6=1         # 开放IPv6端口, 1 : 启用
    ```
 4. 保存以上文件到路由器上，并添加脚本'执行'权限: `chmod +x /root/app/ut/update-ut.sh`
 
@@ -114,3 +127,4 @@
   - [qBittorrent-NAT-TCP-Hole-Punching](https://github.com/Mythologyli/qBittorrent-NAT-TCP-Hole-Punching)
   - [uTorrent Web UI API](https://github.com/bittorrent/webui/wiki/Web-UI-API)
   - [qBittorrent Web UI API](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1))
+  - [Transmission Web UI API](https://github.com/transmission/transmission/blob/main/docs/rpc-spec.md)
