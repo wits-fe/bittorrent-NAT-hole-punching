@@ -13,12 +13,11 @@
    Once open port is established, this script will inform the BT client to set the listen port then add route-forwarding rules.
 
 # Prerequisites
- - Make sure that `iptables` `curl` is installed on your system
+ - Make sure that `curl` is installed on your system
  
    On OpenWrt you can use following command to install：
    ```
    opkg update
-   opkg install iptables
    opkg install curl
    ```
  - Enable Web UI on your BT client
@@ -34,7 +33,12 @@
    
    Or download the ones in the folder [Natter](/Natter) if you use Natter.
    
+   **OpenWrt 22.03 above**: Use the ones in the folder [nft](/nft) instead.
+   
 3. Edit the following fields with your need:
+   
+   `dnat_accept` `nft_snippet` only available on OpenWrt 22.03 or above
+   
    - update-ut.sh (uTrorrent)
    ```
    # uTorrent
@@ -46,6 +50,10 @@
    password="123456"      # WebUI password
    set_tracker_ip=1       # whether set external ip (report to tracker) or not, 1 for true, otherwise false
    forward_ipv6=1         # open port on IPv6, 1 : enable
+   dnat_accept=1          # accept packets with ct status dnat
+   nft_snippet=1          # create a ruleset file in folder /usr/share/nftables.d/ruleset-post , only when the folder exists
+                          # the reload of firewall fw4 will cleanup the user ruleset, 
+                          # ruleset placed in this folder will be added after table fw4 is created
    ```
    
    - update-qb.sh (qBittorrent)
@@ -59,6 +67,8 @@
    password="123456"      # WebUI password
    set_announce_ip=0      # whether set external ip or not, 1 for true, otherwise false
    forward_ipv6=0         # open port on IPv6, 0 : disable
+   dnat_accept=1          # see above
+   nft_snippet=1          # see above
    ```
    
    - update-tr.sh (Transmission)
@@ -71,6 +81,8 @@
    username="admin"       # WebUI user
    password="123456"      # WebUI password
    forward_ipv6=1         # open port on IPv6, 1 : enable
+   dnat_accept=1          # see above
+   nft_snippet=1          # see above
    ```
 4. Save above files to your router device and give script excute permission: `chmod +x /root/app/ut/update-ut.sh`
 5. Run command, for example, `/root/app/natmap -d -s stunserver.stunprotocol.org -h qq.com -b 3333 -e /root/app/ut/update-ut.sh`

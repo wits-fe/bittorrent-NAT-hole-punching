@@ -9,12 +9,11 @@
   当端口打开后，通知 BT 客户端设置端口，添加路由转发规则就是这个脚本所做的事情
    
 # 要求
-- 确保路由器已安装命令 `iptables` `curl`
+- 确保路由器已安装命令 `curl`
 
   在 OpenWrt 可按以下命令安装：
   ```
   opkg update
-  opkg install iptables
   opkg install curl
   ```
 - 在你的 BT 客户端上启用 Web UI
@@ -28,20 +27,29 @@
 2. 下载 `update-ut.sh` (用于 uTorrrent) 或 `update-qb.sh` (用于 qBittorrent) 或 `update-tr.sh` (用于 Transmission)
    
    如果使用Natter，下载文件夹[Natter](/Natter)内的对应脚本
+   
+   **若OpenWrt版本为22.03以上**，请下载文件夹[nft](/nft)内的对应脚本
 
 3. 根据你的情况编辑以下项:
+   
+   其中选项 `dnat_accept` `nft_snippet` 仅在 OpenWrt 22.03 以上有效
+   
    - update-ut.sh (uTrorrent)
    ```
    # utorrent
 
    interface="pppoe-wan2" # 入口流量经过的interface，通常是pppoe-wan，
-                          # 设置为 ppp+ 表示所有以ppp开头的interface
+                          # 设置为 ppp+ 表示所有以ppp开头的interface （nft此项为ppp*）
    host="192.168.0.74"    # 你的 uTrorrent 运行的主机地址
    web_port="4444"        # uTrorrent WebUI 端口
    username="admin"       # WebUI 用户名
    password="123456"      # WebUI 密码
    set_tracker_ip=1       # 是否设置 <报告给tracker的公网IP>，1表示 是，其他值 否
    forward_ipv6=1         # 在这个端口放行IPv6流量(开放IPv6端口) , 1 : 启用
+   dnat_accept=1          # 接收状态为dnat的数据包。若在OpenWrt设置过特定开放端口，可以设置为0避免重复的规则，若有疑问请不要修改
+   nft_snippet=1          # 是否在目录 /usr/share/nftables.d/ruleset-post 下创建nft规则文件。目录不存在不会起效
+                          # 若有需要请自行创建目录，'cd /usr/share/nftables.d/' 'mkdir ruleset-post'
+                          # 因为防火墙重启时用户规则会被清空，故需要添加规则文件到该目录下让在防火墙重启时自动加载
    ```
    
    - update-qb.sh (qBittorrent)
@@ -56,6 +64,8 @@
    password="123456"      # WebUI 密码
    set_announce_ip=0      # 是否设置 <报告给tracker的公网IP>，1表示 是，其他值 否
    forward_ipv6=0         # 开放IPv6端口, 0 : 不启用
+   dnat_accept=1          # 参照上面
+   nft_snippet=1          # 参照上面
    ```
    
    - update-tr.sh (Transmission)
@@ -69,6 +79,8 @@
    username="admin"       # WebUI 用户名
    password="123456"      # WebUI 密码
    forward_ipv6=1         # 开放IPv6端口, 1 : 启用
+   dnat_accept=1          # 参照上面
+   nft_snippet=1          # 参照上面
    ```
 4. 保存以上文件到路由器上，并添加脚本'执行'权限: `chmod +x /root/app/ut/update-ut.sh`
 
