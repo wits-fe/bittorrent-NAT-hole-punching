@@ -49,7 +49,7 @@
    dnat_accept=1          # 接收状态为dnat的数据包。若在OpenWrt设置过特定开放端口，可以设置为0避免重复的规则，若有疑问请不要修改
    nft_snippet=1          # 是否在目录 /usr/share/nftables.d/ruleset-post 下创建nft规则文件。目录不存在不会起效
                           # 若有需要请自行创建目录，'cd /usr/share/nftables.d/' 'mkdir ruleset-post'
-                          # 因为防火墙重启时用户规则会被清空，故需要添加规则文件到该目录下让在防火墙重启时自动加载
+                          # 因为防火墙重载时用户规则会被清空，故需要添加规则文件到该目录下让在防火墙重载时自动加载
    ```
    
    - update-qb.sh (qBittorrent)

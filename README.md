@@ -53,7 +53,7 @@
    dnat_accept=1          # accept packets with ct status dnat
    nft_snippet=1          # create a ruleset file in folder /usr/share/nftables.d/ruleset-post , only when the folder exists
                           # the reload of firewall fw4 will cleanup the user ruleset, 
-                          # ruleset placed in this folder will be added after table fw4 is created
+                          # ruleset placed in this folder will be added after table fw4 is created on reload
    ```
    
    - update-qb.sh (qBittorrent)

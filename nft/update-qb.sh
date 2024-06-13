@@ -115,12 +115,11 @@ fi
 
 # nft
 nft add chain inet fw4 qb_dstnat
+nft flush chain inet fw4 qb_dstnat
 if ! nft list chain inet fw4 dstnat | grep -q 'jump qb_dstnat' > /dev/null; then
   nft add rule inet fw4 dstnat jump qb_dstnat
 fi
-nft flush chain inet fw4 qb_dstnat
 nft add rule inet fw4 qb_dstnat iifname $interface $protocol dport $private_port counter dnat ip to $host:$port
-
 n_rule1="add rule inet fw4 qb_dstnat iifname $interface $protocol dport $private_port counter dnat ip to $host:$port"
 
 n_rule2=""
@@ -128,10 +127,10 @@ n_rule3=""
 n_rule4=""
 if [ $forward_ipv6 -eq 1 ]; then
   nft add chain inet fw4 qb_forward_wan
+  nft flush chain inet fw4 qb_forward_wan
   if ! nft list chain inet fw4 forward_wan | grep -q 'jump qb_forward_wan' > /dev/null; then
     nft insert rule inet fw4 forward_wan jump qb_forward_wan
   fi
-  nft flush chain inet fw4 qb_forward_wan
   nft add rule inet fw4 qb_forward_wan iifname $interface meta nfproto ipv6 tcp dport $port counter accept
   nft add rule inet fw4 qb_forward_wan iifname $interface meta nfproto ipv6 udp dport $port counter accept
   n_rule2="insert rule inet fw4 forward_wan jump qb_forward_wan"
@@ -139,26 +138,23 @@ if [ $forward_ipv6 -eq 1 ]; then
   n_rule4="add rule inet fw4 qb_forward_wan iifname $interface meta nfproto ipv6 udp dport $port counter accept"
 fi
 
-if ! nft list chain inet fw4 forward_wan | grep 'ct status dnat' | grep -q 'accept' > /dev/null; then
-  if [ $dnat_accept -eq 1 ]; then
-    nft insert rule inet fw4 forward_wan ct status dnat counter accept
-  fi
-fi
-
 n_rule5=""
 if [ $dnat_accept -eq 1 ]; then
   n_rule5="insert rule inet fw4 forward_wan ct status dnat counter accept"
+  if ! nft list chain inet fw4 forward_wan | grep 'ct status dnat' | grep -q 'accept' > /dev/null; then
+    nft insert rule inet fw4 forward_wan ct status dnat counter accept
+  fi
 fi
 
 if [ $nft_snippet -eq 1 ] && [ -d /usr/share/nftables.d/ruleset-post ]; then
   echo "
 add chain inet fw4 qb_dstnat
-add rule inet fw4 dstnat jump qb_dstnat
 flush chain inet fw4 qb_dstnat
+add rule inet fw4 dstnat jump qb_dstnat
 $n_rule1
 add chain inet fw4 qb_forward_wan
-$n_rule2
 flush chain inet fw4 qb_forward_wan
+$n_rule2
 $n_rule3
 $n_rule4
 $n_rule5
