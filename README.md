@@ -85,7 +85,7 @@
    nft_snippet=1          # see above
    ```
 4. Save above files to your router device and give script excute permission: `chmod +x /root/app/ut/update-ut.sh`
-5. Run command, for example, `/root/app/natmap -d -s stunserver.stunprotocol.org -h qq.com -b 3333 -e /root/app/ut/update-ut.sh`
+5. Run command, for example, `/root/app/natmap -d -s turn.cloudflare.com -h qq.com -b 3333 -e /root/app/ut/update-ut.sh`
    ```
    /root/app/natmap            path of natmap
    -d                          run as daemon

@@ -84,7 +84,7 @@
    ```
 4. 保存以上文件到路由器上，并添加脚本'执行'权限: `chmod +x /root/app/ut/update-ut.sh`
 
-5. 运行命令，例如, `/root/app/natmap -d -s stunserver.stunprotocol.org -h qq.com -b 3333 -e /root/app/ut/update-ut.sh`
+5. 运行命令，例如, `/root/app/natmap -d -s turn.cloudflare.com -h qq.com -b 3333 -e /root/app/ut/update-ut.sh`
    ```
    /root/app/natmap            natmap 路径
    -d                          以 daemon 模式运行
