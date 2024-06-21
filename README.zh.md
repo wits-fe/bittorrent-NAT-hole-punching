@@ -97,7 +97,7 @@
 - 编辑 `/etc/rc.local`, 比如
   ```
   sleep 60
-  /root/app/natmap -d -s stunserver.stunprotocol.org -h qq.com -b 3333 -e /root/app/ut/update-ut.sh
+  /root/app/natmap -d -s turn.cloudflare.com -h qq.com -b 3333 -e /root/app/ut/update-ut.sh
   exit 0
   ```
   以上命令会使路由器启动完毕后，自动运行 natmap

@@ -98,7 +98,7 @@
 - Edit `/etc/rc.local`, for example
   ```
   sleep 60
-  /root/app/natmap -d -s stunserver.stunprotocol.org -h qq.com -b 3333 -e /root/app/ut/update-ut.sh
+  /root/app/natmap -d -s turn.cloudflare.com -h qq.com -b 3333 -e /root/app/ut/update-ut.sh
   exit 0
   ```
   That will make program always run on startup
