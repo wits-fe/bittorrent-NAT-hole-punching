@@ -138,8 +138,10 @@ retry_on_fail() {
 d_rule="iptables -t nat -D PREROUTING -i $interface -p $protocol --dport $private_port -j DNAT --to-destination $host:$port"
 d_rule2=""
 d_rule3=""
+d_rule4="iptables -t nat -D POSTROUTING -p tcp --dport $private_port -j ACCEPT" #delete SNAT rule to show real ip in uTorrent
 
 retry_on_fail "iptables -t nat -I PREROUTING -i $interface -p $protocol --dport $private_port -j DNAT --to-destination $host:$port"
+retry_on_fail "iptables -t nat -I POSTROUTING -p tcp --dport $private_port -j ACCEPT"
 
 if [ $forward_ipv6 -eq 1 ]; then
   retry_on_fail "ip6tables -t filter -I FORWARD -i $interface -p udp --dport $port -j ACCEPT"
@@ -165,6 +167,7 @@ retry_on_fail() {
 retry_on_fail \"$d_rule\"
 retry_on_fail \"$d_rule2\"
 retry_on_fail \"$d_rule3\"
+retry_on_fail \"$d_rule4\"
 " >"$tdrsh"
 
 rm -f "$rsf"
